@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use Auth;
 use Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -215,4 +216,21 @@ class UserController extends Controller
         }
         // dd($id_course, $complete_check);
     }
+
+    public function stats_lessons () {
+        $stats = DB::table('lessons')->selectRaw('count(uploads.id) as h, lessons.*, COUNT(CASE WHEN uploads.mark = 5 then 1 ELSE NULL END) as c_5, COUNT(CASE WHEN uploads.mark = 4 then 1 ELSE NULL END) as c_4, COUNT(CASE WHEN uploads.mark = 3 then 1 ELSE NULL END) as c_3, COUNT(CASE WHEN uploads.mark = 2 then 1 ELSE NULL END) as c_2')->join('courses', 'lessons.course_id', '=', 'courses.id', 'left outer')->join('uploads', 'lessons.id', '=', 'uploads.lesson_id','left outer')->where('courses.author', Auth::user()->id)->where('lessons.task', '!=', 'NULL')->groupBy('lessons.id')->get();
+        return view('author/stats_lessons', ['stats'=>$stats]);
+    }
+
+    public function end_lesson (Request $request) {
+    // dd($request->all());
+        $name = $request->file('file')->getClientOriginalName();
+        DB::table('uploads')->insert([
+          'file'=>$name,
+          'user_id'=>Auth::user()->id,
+          'lesson_id'=>$request->lesson_id,
+        ]);
+        return redirect()->route('one_course_main', ['id_course'=>$request->id]);
+    }
+
 }

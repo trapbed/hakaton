@@ -165,7 +165,9 @@ class LessonController extends Controller
             }
         }
             
-        return view('student/one_lesson',  ['lesson'=>$one_lesson, 'content'=>$array_content, 'next_id'=>$next_id, 'next_title'=>$next_title, 'before_id'=>$before_id, 'before_title'=>$before_title, 'completed'=>$completed]);
+
+        $task_x = DB::table('uploads')->where('user_id', Auth::user()->id)->where('lesson_id', $id)->get();
+        return view('student/one_lesson',  ['lesson'=>$one_lesson, 'content'=>$array_content, 'next_id'=>$next_id, 'next_title'=>$next_title, 'before_id'=>$before_id, 'before_title'=>$before_title, 'completed'=>$completed, 'task_x'=>$task_x]);
     }
 
     public function hworks(){
@@ -182,14 +184,14 @@ class LessonController extends Controller
         $course = Course::select('title')->where('id', '=', $id)->get();
         // $course = DB::table('lessons')->select('courses.title')->join('courses', 'courses.id', '=', 'lessons.course_id')->where('lessons.id', '=', $id)->limit(1)->get();
         // dd($course, $id);
-        $uploads = DB::table('uploads')->select('*', 'users.name as user_name','uploads.id as id_u')->where('lesson_id', '=', $id)->join('users', 'users.id', '=', 'uploads.user_id')->get();
-        $count = DB::table('uploads')->where('lesson_id', '=', $id)->count();
+        $uploads = DB::table('uploads')->select('*', 'users.name as user_name','uploads.id as id_u')->join('users', 'users.id', '=', 'uploads.user_id')->get();
+        $count = DB::table('uploads')->count();
         return view('author/uploads', ['uploads'=>$uploads, 'course'=>$course, 'count'=>$count]);
     }
 
     public function set_mark(Request $request){
         if(strlen(trim(strip_tags($request->mark))) > 0 ){
-            $update = DB::table('uploads')->where('uploads.id', '=', $request->id_upload)->update(['mark'=>$request->mark, 'comments'=>$request->comments]);
+            $update = DB::table('uploads')->where('uploads.id', '=', $request->id_upload)->update(['mark'=>$request->mark, 'comments'=>$request->comments, 'status'=>'Проверен']);
             if($update){
                 return back()->withErrors(['err'=>'Успешное сохранение оценки!']);
             }

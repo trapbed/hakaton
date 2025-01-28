@@ -380,6 +380,9 @@
 .ta_c{
     text-align: center;
 }
+.ta_s{
+    text-align: start;
+}
 .lh_1_5{
     line-height: 1.5vmax;
 }

@@ -40,6 +40,7 @@
                 <a title="Картинки для уроков" href="{{route('get_images_lesson')}}"><img class="w2 h1" src="{{asset('img/img.png')}}"></a>
                 <a title="Заявки доступа" href="{{route('application_courses')}}"><img class="w2 h1" src="{{asset('img/access.png')}}"></a>
                 <a title="Задания" href="{{route('hworks')}}"><img class="w2 h1" src="{{asset('img/hwork.png')}}"></a>
+                <a title="Статистика уроков" href="{{route('stats_lessons')}}"><img class="w2 h1" src="{{asset('img/free-icon-statistics-3991324.png')}}"></a>
             </div>
 
             <div class="df fdr_c pos_a b_1 g2">

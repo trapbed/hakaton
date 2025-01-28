@@ -71,6 +71,10 @@ Route::middleware('auth')->group(function(){
         Route::post('/rate_course', [CourseController::class, 'rate_course'])->name('rate_course');
         Route::get('one_lesson_student/{id}/{course}', [LessonController::class, 'one_lesson_student'])->name('one_lesson_student');
         Route::get('/my_courses', [CourseController::class, 'my_courses'])->name('my_courses');
+
+        
+        Route::post('/end_lesson', [UserController::class, 'end_lesson'])->name('end_lesson');
+
     });
 
     // $id_user, $id_appl, $role, $status_appl
@@ -99,6 +103,10 @@ Route::middleware('auth')->group(function(){
         Route::get('/more_hwork/{id}', [LessonController::class, 'more_hwork'])->name('more_hwork');
         Route::get('/uploads/{id}', [LessonController::class, 'uploads'])->name('uploads');
         Route::post('set_mark', [LessonController::class, 'set_mark'])->name('set_mark');
+
+
+        Route::get('/stats_lessons', [UserController::class, 'stats_lessons'])->name('stats_lessons');
+
     });
 });
 

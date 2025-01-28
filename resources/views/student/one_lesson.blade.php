@@ -45,11 +45,25 @@
         
 
         @if($lesson->task)
-            <div class="df fdr_c g1 paa_0_5 w50 brc_lp br_03">
-                <h1 class="fsz_1_2 ff_ml c_dp">Задание</h1>
+        <div class="df fdr_c g1 paa_0_5 w50 brc_lp br_03">
+                 <h1 class="fsz_1_2 ff_ml c_dp">Задание</h1>
                 <span class="fsz_1 ff_mr">{{$lesson->task}}</span>
+        @if (strlen(trim($task_x)) < 5)
+
+                <form id="form_end" action="{{route('end_lesson')}}" method="post" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="file">
+                    <input type="hidden" value="{{$lesson->course_id}}" name="id">
+                    <input type="hidden" value="{{$lesson->id}}" name="lesson_id">
+                    <input type="submit" value="Отправить">
+                </form>
+        @else 
+        <div class="ff_mr fsz_1 c_lg c_gr">Уже загружено</div>
+        @endif
+
             </div>
         @endif
+
     </div>
     <div class="df fdr_r jc_spb w52">
         @if ($before_id != null)
